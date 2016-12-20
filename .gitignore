@@ -1,0 +1,8 @@
+bin
+obj
+build/app
+build/server
+node_modules
+npm-debug.*
+normalize.css
+.vs
