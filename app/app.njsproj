@@ -36,10 +36,19 @@
   <ItemGroup>
     <TypeScriptCompile Include="app.component.ts" />
     <TypeScriptCompile Include="app.module.ts" />
+    <TypeScriptCompile Include="canvas\canvas-background.component.ts" />
+    <TypeScriptCompile Include="canvas\canvas-controller.component.ts" />
+    <TypeScriptCompile Include="canvas\canvas-frame.directive.ts" />
+    <TypeScriptCompile Include="canvas\canvas.module.ts" />
+    <TypeScriptCompile Include="canvas\canvas-2d.component.ts" />
+    <TypeScriptCompile Include="canvas\context-2d.directive.ts" />
     <TypeScriptCompile Include="main.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="tsconfig.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="canvas\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />

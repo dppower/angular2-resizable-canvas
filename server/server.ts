@@ -13,7 +13,6 @@ app.use("/scripts", express.static(path.join(__dirname, "..", "..", "node_module
 app.set("port", process.env.PORT || 3000);
 
 app.get("*", (request, response) => {
-    console.log(__dirname);
     response.sendFile(path.join(__dirname, "..", "index.html"));
 });
 
