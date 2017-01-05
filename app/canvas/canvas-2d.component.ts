@@ -8,8 +8,8 @@ import { Context2D } from "./context-2d.directive";
     selector: 'canvas-2d',
     template: `
     <canvas id="canvas" context-2d
-        [width]="canvasWidth" 
-        [height]="canvasHeight"
+        [canvas-width]="canvasWidth" 
+        [canvas-height]="canvasHeight"
         [style.width.px]="styleWidth" 
         [style.height.px]="styleHeight" 
         [style.top.px]="styleTop" 
