@@ -14,10 +14,7 @@ import { CanvasBackground } from "./canvas/canvas-background.component";
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
 
-    @HostListener("load", ["$event"])
-    onDocumentFocused(event: FocusEvent) {
-        console.log(`Document was focused, target: ${(<HTMLElement>event.target).id}.`);
-    };
+    canvas_resolution = { w: 1280, h: 720 };
 
     @ViewChild(CanvasController) controller: CanvasController;
     @ViewChild(Canvas2D) canvas: Canvas2D;
@@ -48,20 +45,24 @@ export class AppComponent implements AfterViewInit, OnDestroy {
             this.update();
         });
 
-        this.controller.updateCanvasDimensions(this.canvas);
+        //this.controller.updateCanvasDimensions(this.canvas);
+        this.canvas.resizeCanvas(this.controller, this.canvas_resolution);
 
         let time_now = window.performance.now();
         let delta_time = time_now - this.previous_time;
         this.accumulated_time += delta_time;
         while (this.accumulated_time > this.time_step) {
             // Update
+            if (this.controller.is_focused) {
+                this.canvas.update(this.time_step);
+            }
             this.accumulated_time -= this.time_step;
         }
 
         // Draw scene
-        if (this.controller.is_focused) {
+        //if (this.controller.is_focused) {
             this.canvas.draw();
-        }
+        //}
         //if (!this.canvas_controller.isCanvasResizing()) {
         //this.c2d.drawRectangle();
         //}
