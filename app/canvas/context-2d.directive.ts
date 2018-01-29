@@ -7,18 +7,20 @@ import { Canvas2D } from "./canvas-2d.component";
 })
 export class Context2D {
 
-    //@Input("canvas-width") canvas_width: number;
-    //@Input("canvas-height") canvas_height: number;
-
     @HostBinding("width") @Input("canvas-width") canvas_width: number;
     @HostBinding("height") @Input("canvas-height") canvas_height: number;
 
+    @HostBinding("style.width.px") @Input("client-width") client_width: number;
+    @HostBinding("style.height.px") @Input("client-height") client_height: number;
+
     position_x = 0;
     position_y = 200;
+    rect_w = 100;
+    rect_h = 150;
 
     private c2d: CanvasRenderingContext2D;
 
-    constructor(private canvas_ref: ElementRef/*, @Inject(forwardRef(() => Canvas2D)) private canvas: Canvas2D*/) { };
+    constructor(private canvas_ref: ElementRef) { };
 
     createContext() {
         this.c2d = (<HTMLCanvasElement>this.canvas_ref.nativeElement).getContext("2d");
@@ -26,15 +28,23 @@ export class Context2D {
         return false;
     };
 
+    updateRectangle(dt: number) {
+        this.position_x += (0.05 * dt);
+    };
+
     drawRectangle() {
         this.clearCanvas();
         this.c2d.fillStyle = "orange";
-        this.position_x += 1;
-        this.c2d.fillRect(this.position_x, this.position_y, 100, 100);
+
+        let w = Math.trunc(this.rect_w * this.canvas_width / this.client_width);
+        let h = Math.trunc(this.rect_h * this.canvas_height / this.client_height);
+        let x = Math.trunc(this.position_x * this.canvas_width / this.client_width);
+        let y = Math.trunc(this.position_y * this.canvas_height / this.client_height);
+
+        this.c2d.fillRect(x, y, w, h);
     };
 
     clearCanvas() {
         this.c2d.clearRect(0, 0, this.canvas_width, this.canvas_height);
-        //this.c2d.clearRect(0, 0, this.canvas.canvasWidth, this.canvas.canvasHeight);
     };
 };

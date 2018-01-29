@@ -39,12 +39,6 @@ import { Canvas2D } from "./canvas-2d.component";
 export class CanvasController {
     @ViewChild(CanvasFrame) canvas_frame: CanvasFrame;
 
-    @HostListener("document:mouseover", ["$event"])
-    onDocumentMouseover(event: MouseEvent) {
-        console.log(`Document mouse over event. Target id: ${(<HTMLDivElement>event.target).id}; currentTarget: ${event.currentTarget}, event phase: ${event.eventPhase}.`);
-        console.log(`default prevented: ${event.defaultPrevented}.`);
-    };
-
     is_focused = false;
 
     constructor() { };
@@ -62,9 +56,6 @@ export class CanvasController {
     };
 
     updateCanvasDimensions(canvas: Canvas2D) {
-        canvas.canvasHeight = this.canvas_frame.frameHeight;
-        canvas.canvasWidth = this.canvas_frame.frameWidth;
-
         canvas.styleHeight = this.canvas_frame.frameHeight;
         canvas.styleWidth = this.canvas_frame.frameWidth;
         canvas.styleTop = this.canvas_frame.frameTop;

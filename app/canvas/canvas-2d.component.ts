@@ -10,8 +10,8 @@ import { Context2D } from "./context-2d.directive";
     <canvas id="canvas" context-2d
         [canvas-width]="canvasWidth" 
         [canvas-height]="canvasHeight"
-        [style.width.px]="styleWidth" 
-        [style.height.px]="styleHeight" 
+        [client-width]="styleWidth" 
+        [client-height]="styleHeight" 
         [style.top.px]="styleTop" 
         [style.left.px]="styleLeft"            
     ><p>{{fallbackText}}</p></canvas>
@@ -52,7 +52,20 @@ export class Canvas2D {
         });
     }
 
+    update(dt: number) {
+        this.c2d.updateRectangle(dt);
+    };
+
     draw() {
         this.c2d.drawRectangle();
+    };
+
+
+    resizeCanvas(controller: CanvasController, resolution: { w: number, h: number }) {
+
+        this.canvasWidth = resolution.w;
+        this.canvasHeight = resolution.h;
+
+        controller.updateCanvasDimensions(this);
     };
 }
