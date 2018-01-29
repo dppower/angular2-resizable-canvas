@@ -5,6 +5,7 @@ import {
     AfterViewInit,
     AfterViewChecked,
     AfterContentChecked,
+    HostListener
 }
 from "@angular/core";
 
@@ -20,7 +21,8 @@ import { Canvas2D } from "./canvas-2d.component";
         [frameWidth]="frame.offsetWidth"
         [frameTop]="frame.offsetTop"
         [frameLeft]="frame.offsetLeft"
-        (mouseover)="setFocus($event)" 
+        (mouseover)="setFocus($event, true)"
+        (mouseout)="setFocus($event, false)"
         (contextmenu)="false"  
     ></div>
     `,
@@ -37,10 +39,22 @@ import { Canvas2D } from "./canvas-2d.component";
 export class CanvasController {
     @ViewChild(CanvasFrame) canvas_frame: CanvasFrame;
 
+    @HostListener("document:mouseover", ["$event"])
+    onDocumentMouseover(event: MouseEvent) {
+        console.log(`Document mouse over event. Target id: ${(<HTMLDivElement>event.target).id}; currentTarget: ${event.currentTarget}, event phase: ${event.eventPhase}.`);
+        console.log(`default prevented: ${event.defaultPrevented}.`);
+    };
+
+    is_focused = false;
+
     constructor() { };
 
-    setFocus(event: MouseEvent) {
-        (<HTMLElement>event.target).focus();
+    setFocus(event: MouseEvent, should_focus: boolean) {
+        event.stopPropagation();
+
+        this.is_focused = should_focus;
+        
+        return false;
     };
 
     isCanvasResizing() {

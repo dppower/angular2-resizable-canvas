@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit, OnDestroy, NgZone } from "@angular/core";
+import { Component, ViewChild, AfterViewInit, OnDestroy, NgZone, HostListener } from "@angular/core";
 
 import { CanvasController } from "./canvas/canvas-controller.component";
 import { Canvas2D } from "./canvas/canvas-2d.component";
@@ -13,6 +13,11 @@ import { CanvasBackground } from "./canvas/canvas-background.component";
     `
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
+
+    @HostListener("load", ["$event"])
+    onDocumentFocused(event: FocusEvent) {
+        console.log(`Document was focused, target: ${(<HTMLElement>event.target).id}.`);
+    };
 
     @ViewChild(CanvasController) controller: CanvasController;
     @ViewChild(Canvas2D) canvas: Canvas2D;
@@ -54,7 +59,9 @@ export class AppComponent implements AfterViewInit, OnDestroy {
         }
 
         // Draw scene
-        this.canvas.draw();
+        if (this.controller.is_focused) {
+            this.canvas.draw();
+        }
         //if (!this.canvas_controller.isCanvasResizing()) {
         //this.c2d.drawRectangle();
         //}
