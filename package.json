@@ -6,6 +6,7 @@
         "rollup": "node ./rollup.js",
         "ngc": "./node_modules/.bin/ngc -p ./ngc-config.json",
         "tsc": "./node_modules/.bin/tsc -p ./app",
+        "aot": "npm run ngc && npm run rollup",
         "start": "npm run tsc && node server.js"
     },
     "keywords": [],

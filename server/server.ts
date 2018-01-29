@@ -7,13 +7,15 @@ import * as fs from "fs";
 
 var app = express();
 
-app.use(express.static(path.join(__dirname, "..")));
+app.use("/app", express.static(path.join(__dirname, "..", "..", "build", "app")));
+app.use("/css", express.static(path.join(__dirname, "..", "..", "docs", "css")));
+app.use("/js", express.static(path.join(__dirname, "..", "..", "docs", "js")));
 app.use("/scripts", express.static(path.join(__dirname, "..", "..", "node_modules")));
 
 app.set("port", process.env.PORT || 3000);
 
 app.get("*", (request, response) => {
-    response.sendFile(path.join(__dirname, "..", "index.html"));
+    response.sendFile(path.join(__dirname, "..", "..", "docs", "html", "index.html"));
 });
 
 var server = http.createServer(app);

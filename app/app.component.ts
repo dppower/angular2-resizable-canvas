@@ -5,7 +5,7 @@ import { Canvas2D } from "./canvas/canvas-2d.component";
 import { CanvasBackground } from "./canvas/canvas-background.component";
 
 @Component({
-    selector: "app-component",
+    selector: "app-main",
     template: `
         <canvas-background [background-color]="'rgb(125, 125, 125)'"></canvas-background>
         <canvas-2d></canvas-2d>

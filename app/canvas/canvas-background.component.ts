@@ -3,7 +3,7 @@
 @Component({
     selector: "canvas-background",
     template: `
-        <div id="background" [style.backgroundColor]="backgroundColor"></div>
+        <div id="background" [style.backgroundColor]="background_color"></div>
     `,
     styles: [`
         #background {
@@ -15,5 +15,5 @@
     `]
 })
 export class CanvasBackground {
-    @Input("background-color") backgroundColor: string;
+    @Input("background-color") background_color: string;
 };

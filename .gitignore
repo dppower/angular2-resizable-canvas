@@ -1,8 +1,7 @@
-bin
-obj
-build/app
-build/server
-node_modules
+bin/
+obj/
+build/
+build-aot/
+node_modules/
 npm-debug.*
-normalize.css
-.vs
+.vs/
