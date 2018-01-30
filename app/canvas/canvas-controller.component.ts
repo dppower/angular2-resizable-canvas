@@ -12,7 +12,6 @@ from "@angular/core";
 import { CanvasFrame } from "./canvas-frame.directive";
 import { Canvas2D } from "./canvas-2d.component";
 
-
 @Component({
     selector: "canvas-controller",
     template: `
@@ -56,9 +55,9 @@ export class CanvasController {
     };
 
     updateCanvasDimensions(canvas: Canvas2D) {
-        canvas.styleHeight = this.canvas_frame.frameHeight;
-        canvas.styleWidth = this.canvas_frame.frameWidth;
-        canvas.styleTop = this.canvas_frame.frameTop;
-        canvas.styleLeft = this.canvas_frame.frameLeft;
+        //canvas.styleHeight = this.canvas_frame.frameHeight;
+        //canvas.styleWidth = this.canvas_frame.frameWidth;
+        //canvas.styleTop = this.canvas_frame.frameTop;
+        //canvas.styleLeft = this.canvas_frame.frameLeft;
     };
 }

@@ -1,71 +1,85 @@
-import { Component, ViewChild, Input} from "@angular/core";
+import { Component, ViewChild, AfterViewInit, OnDestroy } from "@angular/core";
 
-import { CanvasFrame } from "./canvas-frame.directive";
-import { CanvasController } from "./canvas-controller.component";
+//import { CanvasFrame } from "./canvas-frame.directive";
+//import { CanvasController } from "./canvas-controller.component";
+import { Subscription } from "rxjs/Subscription";
 import { Context2D } from "./context-2d.directive";
+import { RenderLoop } from "./render-loop";
 
 @Component({
-    selector: 'canvas-2d',
+    selector: "canvas-2d",
     template: `
-    <canvas id="canvas" context-2d
-        [canvas-width]="canvasWidth" 
-        [canvas-height]="canvasHeight"
-        [client-width]="styleWidth" 
-        [client-height]="styleHeight" 
-        [style.top.px]="styleTop" 
-        [style.left.px]="styleLeft"            
-    ><p>{{fallbackText}}</p></canvas>
+    <canvas id="canvas" context-2d canvas-controller>
+        <p>{{fallback_text}}</p>
+    </canvas>
     `,
     styles: [`
-    #canvas {
+    canvas {
+        height: 100%;
+        width: 100%;
         position: absolute;
         z-index: 1;
-        border: 0.1em solid red;
+        border: 0.25em dashed white;
     }
     `]
 })
-export class Canvas2D {
+export class Canvas2D implements AfterViewInit, OnDestroy {
 
-    @ViewChild(Context2D) c2d: Context2D;
+    @ViewChild(Context2D) context_2d: Context2D;
 
-    fallbackText = "Loading Canvas...";
+    fallback_text = "Loading Canvas...";
 
-    styleWidth: number;
-    styleHeight: number;
-    styleTop: number;
-    styleLeft: number;
+    //styleWidth: number;
+    //styleHeight: number;
+    //styleTop: number;
+    //styleLeft: number;
 
-    canvasWidth: number;
-    canvasHeight: number;
+    //canvasWidth: number;
+    //canvasHeight: number;
+    private update_sub_: Subscription;
+    private render_sub_: Subscription;
 
-    constructor() { };
+    constructor(private render_loop_: RenderLoop) { };
 
-    initialise() {
-        return new Promise<boolean>((resolve, reject) => {
-            if (this.c2d.createContext()) {
-                resolve(true);
-            }
-            else {
-                this.fallbackText = "Unable to initialise canvas-2d context."
-                reject();
-            }
-        });
+    ngAfterViewInit() {
+        if (!this.context_2d.createContext()) {
+            this.fallback_text = "Unable to initialise canvas-2d context."
+            return;
+        }
+
+        this.render_sub_ = this.render_loop_.render_events
+            .subscribe(alpha => {
+                this.draw();
+            });
+
+        this.update_sub_ = this.render_loop_.update_events
+            .subscribe(dt => {
+                this.update(dt);
+            });
+
+        this.render_loop_.begin();
     }
 
     update(dt: number) {
-        this.c2d.updateRectangle(dt);
+        this.context_2d.updateRectangle(dt);
     };
 
     draw() {
-        this.c2d.drawRectangle();
+        this.context_2d.drawRectangle();
     };
 
 
-    resizeCanvas(controller: CanvasController, resolution: { w: number, h: number }) {
+    //resizeCanvas(controller: CanvasController, resolution: { w: number, h: number }) {
 
-        this.canvasWidth = resolution.w;
-        this.canvasHeight = resolution.h;
+    //    this.canvasWidth = resolution.w;
+    //    this.canvasHeight = resolution.h;
 
-        controller.updateCanvasDimensions(this);
+    //    controller.updateCanvasDimensions(this);
+    //};
+
+    ngOnDestroy() {
+        this.render_loop_.stop();
+        this.update_sub_ && this.update_sub_.unsubscribe();
+        this.render_sub_ && this.render_sub_.unsubscribe();
     };
 }

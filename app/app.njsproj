@@ -39,11 +39,15 @@
     <TypeScriptCompile Include="app.component.ts" />
     <TypeScriptCompile Include="app.module.ts" />
     <TypeScriptCompile Include="canvas\canvas-background.component.ts" />
+    <TypeScriptCompile Include="canvas\canvas-controller.directive.ts" />
     <TypeScriptCompile Include="canvas\canvas-controller.component.ts" />
     <TypeScriptCompile Include="canvas\canvas-frame.directive.ts" />
     <TypeScriptCompile Include="canvas\canvas.module.ts" />
     <TypeScriptCompile Include="canvas\canvas-2d.component.ts" />
     <TypeScriptCompile Include="canvas\context-2d.directive.ts" />
+    <TypeScriptCompile Include="canvas\input-manager.ts" />
+    <TypeScriptCompile Include="canvas\render-loop.ts" />
+    <TypeScriptCompile Include="canvas\vec2.ts" />
     <TypeScriptCompile Include="main.ts" />
   </ItemGroup>
   <ItemGroup>

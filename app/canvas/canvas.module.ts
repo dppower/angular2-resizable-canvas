@@ -1,15 +1,19 @@
 ﻿import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
+// Components
 import { Canvas2D } from "./canvas-2d.component";
-import { CanvasFrame } from "./canvas-frame.directive";
-import { CanvasController } from "./canvas-controller.component";
+// Directives
 import { Context2D } from "./context-2d.directive";
-import { CanvasBackground } from "./canvas-background.component";
+import { CanvasController } from "./canvas-controller.directive";
+// Providers
+import { InputManager } from "./input-manager";
+import { RenderLoop } from "./render-loop";
 
 @NgModule({
     imports: [ CommonModule ],
-    declarations: [ Canvas2D, CanvasFrame, CanvasController, Context2D, CanvasBackground ],
-    exports: [ Canvas2D, CanvasController, CanvasBackground ]
+    declarations: [ Canvas2D, CanvasController, Context2D ],
+    providers: [ RenderLoop, InputManager ],
+    exports: [ Canvas2D ]
 })
 export class CanvasModule { };
