@@ -1,36 +1,44 @@
-﻿import { Directive, ElementRef, HostBinding, Input, Host, Inject, forwardRef } from "@angular/core";
+﻿import { Directive, ElementRef, OnInit } from "@angular/core";
 
 import { Canvas2D } from "./canvas-2d.component";
+import { CanvasSettings } from "./canvas-settings";
 
 @Directive({
     selector: "[context-2d]"
 })
-export class Context2D {
-
-    //@HostBinding("width") @Input("canvas-width") canvas_width: number;
-    //@HostBinding("height") @Input("canvas-height") canvas_height: number;
-
-    //@HostBinding("style.width.px") @Input("client-width") client_width: number;
-    //@HostBinding("style.height.px") @Input("client-height") client_height: number;
-
-    position_x = 0;
+export class Context2D implements OnInit {
+    
+    position_x = 200;
     position_y = 200;
-    rect_w = 100;
-    rect_h = 150;
+    rectangle_width: number;
+    rectangle_height: number;
 
     get canvas_width() {
-        let width = (<HTMLCanvasElement>this.canvas_ref_.nativeElement).width;
-        return width > 1920 ? 1920 : width;
+        return (<HTMLCanvasElement>this.canvas_ref_.nativeElement).width;
     };
 
     get canvas_height() {
-        let height = (<HTMLCanvasElement>this.canvas_ref_.nativeElement).height;
-        return height > 1080 ? 1080 : height;
+        return (<HTMLCanvasElement>this.canvas_ref_.nativeElement).height;
+    };
+
+    get client_width() {
+        return (<HTMLCanvasElement>this.canvas_ref_.nativeElement).clientWidth;
+    };
+
+    get client_height() {
+        return (<HTMLCanvasElement>this.canvas_ref_.nativeElement).clientHeight;
     };
 
     private context_2d_: CanvasRenderingContext2D;
 
-    constructor(private canvas_ref_: ElementRef) { };
+    constructor(private canvas_ref_: ElementRef, private canvas_settings_: CanvasSettings) { };
+
+    ngOnInit() {
+        this.canvas_settings_.rectangle_size.subscribe(size => {
+            this.rectangle_width = size.width;
+            this.rectangle_height = size.height;
+        });
+    };
 
     createContext() {
         this.context_2d_ = (<HTMLCanvasElement>this.canvas_ref_.nativeElement).getContext("2d");
@@ -45,10 +53,10 @@ export class Context2D {
         this.clearCanvas();
         this.context_2d_.fillStyle = "orange";
 
-        let w = Math.trunc(this.rect_w);
-        let h = Math.trunc(this.rect_h);
-        let x = Math.trunc(this.position_x);
-        let y = Math.trunc(this.position_y);
+        let w = Math.round(this.canvas_width * (this.rectangle_width / this.client_width));
+        let h = Math.round(this.canvas_height * (this.rectangle_height / this.client_height));
+        let x = Math.round(this.canvas_width * (this.position_x / this.client_width));
+        let y = Math.round(this.canvas_height * (this.position_y / this.client_height));
 
         this.context_2d_.fillRect(x, y, w, h);
     };

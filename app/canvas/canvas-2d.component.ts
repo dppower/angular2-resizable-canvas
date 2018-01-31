@@ -1,7 +1,5 @@
 import { Component, ViewChild, AfterViewInit, OnDestroy } from "@angular/core";
 
-//import { CanvasFrame } from "./canvas-frame.directive";
-//import { CanvasController } from "./canvas-controller.component";
 import { Subscription } from "rxjs/Subscription";
 import { Context2D } from "./context-2d.directive";
 import { RenderLoop } from "./render-loop";
@@ -12,14 +10,14 @@ import { RenderLoop } from "./render-loop";
     <canvas id="canvas" context-2d canvas-controller>
         <p>{{fallback_text}}</p>
     </canvas>
+    <canvas-dimensions></canvas-dimensions>
     `,
     styles: [`
     canvas {
         height: 100%;
         width: 100%;
         position: absolute;
-        z-index: 1;
-        border: 0.25em dashed white;
+        z-index: 0;
     }
     `]
 })
@@ -28,14 +26,7 @@ export class Canvas2D implements AfterViewInit, OnDestroy {
     @ViewChild(Context2D) context_2d: Context2D;
 
     fallback_text = "Loading Canvas...";
-
-    //styleWidth: number;
-    //styleHeight: number;
-    //styleTop: number;
-    //styleLeft: number;
-
-    //canvasWidth: number;
-    //canvasHeight: number;
+    
     private update_sub_: Subscription;
     private render_sub_: Subscription;
 
@@ -67,15 +58,6 @@ export class Canvas2D implements AfterViewInit, OnDestroy {
     draw() {
         this.context_2d.drawRectangle();
     };
-
-
-    //resizeCanvas(controller: CanvasController, resolution: { w: number, h: number }) {
-
-    //    this.canvasWidth = resolution.w;
-    //    this.canvasHeight = resolution.h;
-
-    //    controller.updateCanvasDimensions(this);
-    //};
 
     ngOnDestroy() {
         this.render_loop_.stop();

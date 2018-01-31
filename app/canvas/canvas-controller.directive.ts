@@ -1,8 +1,10 @@
 import { Directive, HostListener, HostBinding, ElementRef } from "@angular/core";
 
+import { merge as rxMerge } from "rxjs/observable/merge";
 import { distinctUntilChanged, debounceTime } from "rxjs/operators";
 import { Subject } from "rxjs/Subject";
 import { Subscription } from "rxjs/Subscription";
+import { CanvasSettings } from "./canvas-settings";
 
 @Directive({
     selector: "[canvas-controller]",
@@ -27,19 +29,21 @@ export class CanvasController {
 
     is_focused = false;
 
-    constructor(private canvas_ref_: ElementRef) { };
+    constructor(private canvas_ref_: ElementRef, private canvas_settings_: CanvasSettings) { };
 
     ngOnInit() {
-        this.resize_sub_ = this.resize_events
-            .pipe(
-                distinctUntilChanged((x, y) => x.width === y.width && x.height === y.height),
-                debounceTime(100)
+        this.resize_sub_ = rxMerge(
+                this.resize_events
+                    .pipe(
+                        distinctUntilChanged((x, y) => x.width === y.width && x.height === y.height),
+                        debounceTime(100)
+                ),
+                this.canvas_settings_.canvas_resolution
             )
             .subscribe((changes) => {
                 //this.input_manager_.aspect = changes.width / changes.height;
                 this.canvas_width = changes.width;
                 this.canvas_height = changes.height;
-                console.log(`changes width: ${changes.width}, height: ${changes.height}.`);
             });
     };
 
